@@ -14,14 +14,59 @@ using TMPro;
 
 public class GameFlow : MonoBehaviour
 {
-    [SerializeField] private GameObject mainMenu;
-    [SerializeField] private GameObject mainDraftMenu; // !! ASSIGN IN INSPECTOR !!
+    [SerializeField] private List<GameObject> screenMainMenu;
+    [SerializeField] private List<GameObject> screenMainDraft;
+    [SerializeField] private List<GameObject> screenDraftSetup;
+
     [SerializeField] private TMP_InputField joinCodeInputField;
+
+    public enum Screens
+    {
+        MainMenu = 1,
+        MainDraft = 2,
+        DraftSetup = 3
+    }
 
     private void Awake()
     {
-        mainMenu.SetActive(true);
-        mainDraftMenu.SetActive(false); // !! ASSIGN IN INSPECTOR !!
+        ShowScreen(Screens.MainMenu);
+    }
+
+    public void ShowScreen(Screens screen)
+    {
+        HideAllScreens();
+
+        switch (screen)
+        {
+            case Screens.MainMenu:
+                foreach (GameObject g in screenMainMenu)
+                    g.SetActive(true);
+                break;
+            case Screens.MainDraft:
+                foreach (GameObject g in screenMainDraft)
+                    g.SetActive(true);
+                break;
+            case Screens.DraftSetup:
+                foreach (GameObject g in screenDraftSetup)
+                    g.SetActive(true);
+                break;
+        }
+    }
+
+    private void HideAllScreens()
+    {
+        foreach (GameObject g in screenMainMenu)
+        {
+            g.SetActive(false);
+        }
+        foreach (GameObject g in screenMainDraft)
+        {
+            g.SetActive(false);
+        }
+        foreach (GameObject g in screenDraftSetup)
+        {
+            g.SetActive(false);
+        }
     }
 
     public async void StartHost()
