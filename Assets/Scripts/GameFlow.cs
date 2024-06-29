@@ -89,6 +89,7 @@ public class GameFlow : MonoBehaviour
         Allocation allocation = await RelayService.Instance.CreateAllocationAsync(maxConnections);
         NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(new RelayServerData(allocation, "dtls"));
         var joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
+        GUIUtility.systemCopyBuffer = joinCode;
 
         return NetworkManager.Singleton.StartHost() ? joinCode : null;
     }

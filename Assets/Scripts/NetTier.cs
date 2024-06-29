@@ -11,25 +11,37 @@ public class NetTier : NetworkBehaviour
     public NetworkVariable<int> m_MinBid = new NetworkVariable<int>(0);
 
     private TieredPlayerList tieredPlayerList;
+    private bool isInitialized = false;
 
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
 
-        m_TierName.OnValueChanged += OnTierNameChanged;
-        m_TierColor.OnValueChanged += OnTierColorChanged;
-        m_MinBid.OnValueChanged += OnMinBidChanged;
+        if (IsServer)
+        {
+            m_TierName.OnValueChanged += OnTierNameChanged;
+            m_TierColor.OnValueChanged += OnTierColorChanged;
+            m_MinBid.OnValueChanged += OnMinBidChanged;
+        }
 
         tieredPlayerList = GameManager.SetupManager.AddTieredPlayerList(NetworkObjectId);
+
+        if (IsClient)
+        {
+            StartCoroutine(InitializeClient());
+        }
     }
 
     public override void OnNetworkDespawn()
     {
         base.OnNetworkDespawn();
 
-        m_TierName.OnValueChanged -= OnTierNameChanged;
-        m_TierColor.OnValueChanged -= OnTierColorChanged;
-        m_MinBid.OnValueChanged -= OnMinBidChanged;
+        if (IsServer)
+        {
+            m_TierName.OnValueChanged -= OnTierNameChanged;
+            m_TierColor.OnValueChanged -= OnTierColorChanged;
+            m_MinBid.OnValueChanged -= OnMinBidChanged;
+        }
 
         if (tieredPlayerList != null)
         {
@@ -38,24 +50,43 @@ public class NetTier : NetworkBehaviour
         }
     }
 
+    private IEnumerator InitializeClient()
+    {
+        yield return new WaitUntil(() => m_TierName.IsDirty() == false && m_TierColor.IsDirty() == false && m_MinBid.IsDirty() == false);
+        UpdateClientState();
+        isInitialized = true;
+    }
+
+    private void UpdateClientState()
+    {
+        tieredPlayerList.SetTierName(m_TierName.Value.ToString());
+        if (ColorUtility.TryParseHtmlString(m_TierColor.Value.ToString(), out Color targetColor))
+        {
+            tieredPlayerList.SetTierNameColor(targetColor);
+        }
+        tieredPlayerList.SetMinBid(m_MinBid.Value);
+    }
+
     private void OnTierNameChanged(FixedString32Bytes oldValue, FixedString32Bytes newValue)
     {
-        if (oldValue != newValue)
+        if (isInitialized && oldValue != newValue)
             tieredPlayerList.SetTierName(newValue.ToString());
     }
 
     private void OnTierColorChanged(FixedString32Bytes oldValue, FixedString32Bytes newValue)
     {
-        if (oldValue != newValue)
+        if (isInitialized && oldValue != newValue)
         {
-            ColorUtility.TryParseHtmlString(newValue.ToString(), out Color targetColor);
-            tieredPlayerList.SetTierNameColor(targetColor);
+            if (ColorUtility.TryParseHtmlString(newValue.ToString(), out Color targetColor))
+            {
+                tieredPlayerList.SetTierNameColor(targetColor);
+            }
         }
     }
 
     private void OnMinBidChanged(int oldValue, int newValue)
     {
-        if (oldValue != newValue)
+        if (isInitialized && oldValue != newValue)
             tieredPlayerList.SetMinBid(newValue);
     }
 }

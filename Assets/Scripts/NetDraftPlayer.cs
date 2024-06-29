@@ -21,6 +21,11 @@ public class NetDraftPlayer : NetworkBehaviour
         base.OnNetworkSpawn();
 
         m_DraftPlayerName.OnValueChanged += OnNameAssigned;
+
+        if (!IsHost)
+        {
+            StartCoroutine(InitializeClient());
+        }
     }
 
     public override void OnNetworkDespawn()
@@ -31,6 +36,17 @@ public class NetDraftPlayer : NetworkBehaviour
 
         if (unownedPlayer != null)
             Destroy(unownedPlayer.gameObject);
+    }
+
+    private IEnumerator InitializeClient()
+    {
+        yield return new WaitUntil(() => !m_DraftPlayerName.IsDirty() && !m_NetTierId.IsDirty());
+        UpdateClientState();
+    }
+
+    private void UpdateClientState()
+    {
+        OnNameAssigned("", m_DraftPlayerName.Value);
     }
 
     private void OnNameAssigned(FixedString32Bytes oldValue, FixedString32Bytes newValue)

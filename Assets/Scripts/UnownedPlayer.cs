@@ -57,6 +57,7 @@ public class UnownedPlayer : MonoBehaviour
 
     public void DeletePlayer() // Button
     {
-        netDraftPlayer.Despawn();
+        if (netDraftPlayer.IsSpawned)
+            netDraftPlayer.Despawn();
     }
 }
