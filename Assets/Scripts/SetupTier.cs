@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
@@ -35,7 +36,7 @@ public class SetupTier : MonoBehaviour
         hexColorImage.color = targetColor;
     }
 
-    public void SaveTierSettings()
+    public void SaveTierSettings() // Button
     {
         if (tierColorInputField.text.Length == 0)
             tierColorInputField.text = $"#ffffff";
@@ -51,8 +52,25 @@ public class SetupTier : MonoBehaviour
         netTier.m_MinBid.Value = minBid;
     }
 
-    public void ExportToDraft()
+    public void AddPlayers() // Button
     {
+        string[] addPlayers = playersInputField.text.Split(',').Select(player => player.Trim()).ToArray();
+        NetDraftPlayer[] existingNetDraftPlayers = FindObjectsOfType<NetDraftPlayer>();
+        foreach(string playerName in addPlayers)
+        {
+            bool isDuplicate = false;
+            foreach (NetDraftPlayer netDraftPlayer in existingNetDraftPlayers)
+            {
+                if (netDraftPlayer.m_DraftPlayerName.Value == playerName)
+                {
+                    Debug.LogWarning($"Skipping adding duplicate draft player name: <b>{playerName}</b>");
+                    isDuplicate = true;
+                    break;
+                }
+            }
 
+            if (!isDuplicate)
+                GameManager.SetupManager.CreateDraftPlayer(tierNetworkObjectId, playerName);
+        }
     }
 }

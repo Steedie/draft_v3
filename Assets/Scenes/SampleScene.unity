@@ -4614,6 +4614,7 @@ MonoBehaviour:
   netTierPrefab: {fileID: 7792871105549678319, guid: addedf1554c4cc14a92127b5c1aa3032, type: 3}
   tieredPlayerList: {fileID: 8594906451981055675, guid: fb39e110056fd5f4fabd6bfb6b3b007a, type: 3}
   tieredPlayerListParent: {fileID: 1927846595}
+  netDraftPlayerPrefab: {fileID: 5632589412607892913, guid: 5f8587434310b1b4caf11a83cff73528, type: 3}
 --- !u!114 &1525722586
 MonoBehaviour:
   m_ObjectHideFlags: 0

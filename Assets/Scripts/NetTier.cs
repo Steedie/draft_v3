@@ -6,9 +6,9 @@ using UnityEngine;
 
 public class NetTier : NetworkBehaviour
 {
-    public NetworkVariable<FixedString32Bytes> m_TierName = new NetworkVariable<FixedString32Bytes>();
-    public NetworkVariable<FixedString32Bytes> m_TierColor = new NetworkVariable<FixedString32Bytes>();
-    public NetworkVariable<int> m_MinBid = new NetworkVariable<int>();
+    public NetworkVariable<FixedString32Bytes> m_TierName = new NetworkVariable<FixedString32Bytes>("");
+    public NetworkVariable<FixedString32Bytes> m_TierColor = new NetworkVariable<FixedString32Bytes>("#ffffff");
+    public NetworkVariable<int> m_MinBid = new NetworkVariable<int>(0);
 
     private TieredPlayerList tieredPlayerList;
 
@@ -31,8 +31,11 @@ public class NetTier : NetworkBehaviour
         m_TierColor.OnValueChanged -= OnTierColorChanged;
         m_MinBid.OnValueChanged -= OnMinBidChanged;
 
-        if (tieredPlayerList != null )
+        if (tieredPlayerList != null)
+        {
+            tieredPlayerList.DeleteAllPlayers();
             Destroy(tieredPlayerList.gameObject);
+        }
     }
 
     private void OnTierNameChanged(FixedString32Bytes oldValue, FixedString32Bytes newValue)

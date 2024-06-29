@@ -16,6 +16,8 @@ public class SetupManager : NetworkBehaviour
     [SerializeField] private TieredPlayerList tieredPlayerList;
     [SerializeField] private Transform tieredPlayerListParent;
 
+    [SerializeField] private NetDraftPlayer netDraftPlayerPrefab;
+
     public void ToggleSetupMenu()
     {
         if (!IsHost)
@@ -47,6 +49,13 @@ public class SetupManager : NetworkBehaviour
         TieredPlayerList newTieredPlayerList = Instantiate(tieredPlayerList, tieredPlayerListParent);
         newTieredPlayerList.SetId(networkObjectId);
         return newTieredPlayerList;
+    }
+
+    public void CreateDraftPlayer(ulong tierId, string draftPlayerName)
+    {
+        NetDraftPlayer netDraftPlayer = Instantiate(netDraftPlayerPrefab);
+        netDraftPlayer.GetComponent<NetworkObject>().Spawn();
+        netDraftPlayer.SetupDraftPlayer(tierId, draftPlayerName);
     }
 
     public void SetAsLastSibling(Transform t)

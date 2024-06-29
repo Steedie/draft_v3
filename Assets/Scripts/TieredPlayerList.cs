@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using TMPro;
+using Unity.Netcode;
 using UnityEngine;
 
 public class TieredPlayerList : MonoBehaviour
@@ -12,10 +13,16 @@ public class TieredPlayerList : MonoBehaviour
     [SerializeField] private TMP_Text minBidText;
     [SerializeField] private Transform content;
 
+    [SerializeField] private UnownedPlayer unownedPlayerPrefab;
+
     public void SetId(ulong id)
     {
         tierNetworkObjectId = id;
-        Debug.Log($"SetupTier tierNetworkObjectId set to: {tierNetworkObjectId}");
+    }
+
+    public ulong GetNetTierId()
+    {
+        return tierNetworkObjectId;
     }
 
     public void SetTierName(string value)
@@ -31,5 +38,20 @@ public class TieredPlayerList : MonoBehaviour
     public void SetTierNameColor(Color value)
     {
         tierNameText.color = value;
+    }
+
+    public UnownedPlayer AddUnownedDraftPlayer(ulong draftPlayerId, string playerName)
+    {
+        UnownedPlayer player = Instantiate(unownedPlayerPrefab, content);
+        player.Setup(tierNetworkObjectId, draftPlayerId, playerName);
+        return player;
+    }
+
+    public void DeleteAllPlayers()
+    {
+        foreach(Transform t in content)
+        {
+            t.GetComponent<UnownedPlayer>().DeletePlayer();
+        }
     }
 }
