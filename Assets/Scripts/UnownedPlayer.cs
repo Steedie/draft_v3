@@ -60,4 +60,9 @@ public class UnownedPlayer : MonoBehaviour
         if (netDraftPlayer.IsSpawned)
             netDraftPlayer.Despawn();
     }
+
+    public void SelectToBidButton() // Button
+    {
+        GameManager.BidManager.StartBidOnDraftPlayerRpc(netDraftPlayer.NetworkObjectId);
+    }
 }

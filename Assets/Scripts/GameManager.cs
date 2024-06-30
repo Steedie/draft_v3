@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
     public static NetPlayer NetPlayer;
     public static GameFlow GameFlow;
     public static SetupManager SetupManager;
+    public static CaptainManager CaptainManager;
+    public static BidManager BidManager;
 
     private void Awake()
     {
@@ -16,6 +18,8 @@ public class GameManager : MonoBehaviour
 
         GameFlow = GetComponentInChildren<GameFlow>();
         SetupManager = GetComponentInChildren<SetupManager>();
+        CaptainManager = GetComponentInChildren<CaptainManager>();
+        BidManager = GetComponentInChildren<BidManager>();
     }
 
     public void AssignLocalPlayer(NetPlayer netPlayer)

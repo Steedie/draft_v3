@@ -90,9 +90,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Content: {fileID: 457770152413167164}
-  m_Horizontal: 1
+  m_Horizontal: 0
   m_Vertical: 1
-  m_MovementType: 1
+  m_MovementType: 2
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
@@ -781,6 +781,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1950694353357527795}
+  - component: {fileID: 6385644371154968658}
   m_Layer: 5
   m_Name: CaptainCard
   m_TagString: Untagged
@@ -808,3 +809,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 347.3664, y: 342.2}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &6385644371154968658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8463247935323449805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be084ce4d57958b44b58f56e82044641, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  captainName: {fileID: 1283021957279438570}
+  captainMoney: {fileID: 7622698729678089866}
+  ownedPlayerPrefab: {fileID: 7878206269425547617, guid: e74cf0b13e95ff04bb20a5003fec970b, type: 3}
+  ownedPlayersParent: {fileID: 457770152413167164}

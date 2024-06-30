@@ -17,12 +17,9 @@ public class NetTier : NetworkBehaviour
     {
         base.OnNetworkSpawn();
 
-        if (IsServer)
-        {
-            m_TierName.OnValueChanged += OnTierNameChanged;
-            m_TierColor.OnValueChanged += OnTierColorChanged;
-            m_MinBid.OnValueChanged += OnMinBidChanged;
-        }
+        m_TierName.OnValueChanged += OnTierNameChanged;
+        m_TierColor.OnValueChanged += OnTierColorChanged;
+        m_MinBid.OnValueChanged += OnMinBidChanged;
 
         tieredPlayerList = GameManager.SetupManager.AddTieredPlayerList(NetworkObjectId);
 
@@ -36,12 +33,9 @@ public class NetTier : NetworkBehaviour
     {
         base.OnNetworkDespawn();
 
-        if (IsServer)
-        {
-            m_TierName.OnValueChanged -= OnTierNameChanged;
-            m_TierColor.OnValueChanged -= OnTierColorChanged;
-            m_MinBid.OnValueChanged -= OnMinBidChanged;
-        }
+        m_TierName.OnValueChanged -= OnTierNameChanged;
+        m_TierColor.OnValueChanged -= OnTierColorChanged;
+        m_MinBid.OnValueChanged -= OnMinBidChanged;
 
         if (tieredPlayerList != null)
         {

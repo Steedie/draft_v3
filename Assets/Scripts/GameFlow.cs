@@ -18,7 +18,10 @@ public class GameFlow : MonoBehaviour
     [SerializeField] private List<GameObject> screenMainDraft;
     [SerializeField] private List<GameObject> screenDraftSetup;
 
+    [SerializeField] private TMP_InputField captainNameInputField;
     [SerializeField] private TMP_InputField joinCodeInputField;
+
+    private string captainName;
 
     public enum Screens
     {
@@ -29,7 +32,24 @@ public class GameFlow : MonoBehaviour
 
     private void Awake()
     {
+        if (PlayerPrefs.HasKey("CaptainName"))
+        {
+            captainName = PlayerPrefs.GetString("CaptainName");
+            captainNameInputField.text = captainName;
+        }
+
         ShowScreen(Screens.MainMenu);
+    }
+
+    public void UpdateCaptainName(string name)
+    {
+        captainName = name;
+        PlayerPrefs.SetString("CaptainName", captainName);
+    }
+
+    public string GetCaptainName()
+    {
+        return captainName;
     }
 
     public void ShowScreen(Screens screen)
