@@ -10,8 +10,10 @@ public class CaptainManager : MonoBehaviour
     [SerializeField] private CaptainCard captainCardPrefab;
     [SerializeField] private Transform captainCardParent;
 
-    public CaptainCard CreateCaptainCard()
+    public CaptainCard CreateCaptainCard(ulong netPlayerId)
     {
-        return Instantiate(captainCardPrefab, captainCardParent);
+        CaptainCard captainCard = Instantiate(captainCardPrefab, captainCardParent);
+        captainCard.SetCaptainNetPlayerId(netPlayerId);
+        return captainCard;
     }
 }

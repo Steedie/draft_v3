@@ -48,7 +48,9 @@ public class NetPlayer : NetworkBehaviour
         {
             // Is Captain and not Host
             if (captainCard == null)
-                captainCard = GameManager.CaptainManager.CreateCaptainCard();
+            {
+                captainCard = GameManager.CaptainManager.CreateCaptainCard(NetworkObjectId);
+            }
 
             m_PlayerName.OnValueChanged += OnCaptainNameChanged;
             m_Money.OnValueChanged += OnCaptainMoneyChanged;
@@ -119,7 +121,8 @@ public class NetPlayer : NetworkBehaviour
     {
         if (captainCard == null)
         {
-            captainCard = GameManager.CaptainManager.CreateCaptainCard();
+            captainCard = GameManager.CaptainManager.CreateCaptainCard(NetworkObjectId);
+
             StartCoroutine(InitializeClient());
         }
 

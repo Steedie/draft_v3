@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Services.Relay;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -11,6 +12,8 @@ public class GameManager : MonoBehaviour
     public static SetupManager SetupManager;
     public static CaptainManager CaptainManager;
     public static BidManager BidManager;
+
+    public string joinCode;
 
     private void Awake()
     {
@@ -27,5 +30,10 @@ public class GameManager : MonoBehaviour
         NetPlayer = netPlayer;
 
         GameFlow.ShowScreen(GameFlow.Screens.MainDraft);
+    }
+
+    public void CopyJoinCode()
+    {
+        GUIUtility.systemCopyBuffer = joinCode;
     }
 }
