@@ -34,6 +34,7 @@ public class SoundManager : MonoBehaviour
         {
             AudioSource source = gameObject.AddComponent<AudioSource>();
             source.clip = sound.clip;
+            source.volume = sound.volume;
             soundSources[sound.name] = source;
         }
     }

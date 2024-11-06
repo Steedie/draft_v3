@@ -35,5 +35,6 @@ public class GameManager : MonoBehaviour
     public void CopyJoinCode()
     {
         GUIUtility.systemCopyBuffer = joinCode;
+        SoundManager.Instance.PlaySound("Edit");
     }
 }

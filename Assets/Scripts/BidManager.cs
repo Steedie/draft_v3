@@ -162,6 +162,8 @@ public class BidManager : NetworkBehaviour
 
         biddingOverlay.SetActive(true);
         SetControlsActive(true);
+
+        SoundManager.Instance.PlaySound("Ding");
     }
 
     private void SetControlsActive(bool active)
@@ -189,12 +191,14 @@ public class BidManager : NetworkBehaviour
         if (playerMoney < bidAmount)
         {
             Debug.LogWarning($"Don't have enough money to make this bid. Money: {playerMoney}, bid amount: {bidAmount}");
+            SoundManager.Instance.PlaySound("Error");
             return;
         }
 
         if (bidAmount <= m_CurrentBid.Value)
         {
             Debug.LogWarning($"Bid amount ({bidAmount}) must be larger than the current highest bid ({m_CurrentBid.Value})");
+            SoundManager.Instance.PlaySound("Error");
             return;
         }
 
@@ -208,6 +212,7 @@ public class BidManager : NetworkBehaviour
             if (bidAmount < netTier.m_MinBid.Value)
             {
                 Debug.LogWarning($"Bid amount ({bidAmount}) must be at least the minimum bid for this tier");
+                SoundManager.Instance.PlaySound("Error");
                 return;
             }
         }
@@ -293,6 +298,7 @@ public class BidManager : NetworkBehaviour
             if (m_BidLeaderId.Value == 0)
             {
                 Debug.LogWarning("There are currently no bidders, can't declare a winner.");
+                SoundManager.Instance.PlaySound("Error");
                 return;
             }
 

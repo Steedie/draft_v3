@@ -80,5 +80,6 @@ public class CaptainCard : MonoBehaviour
         netPlayerObject.GetComponent<NetPlayer>().m_Money.Value = newMoney;
 
         editMoney.SetActive(false);
+        SoundManager.Instance.PlaySound("Edit");
     }
 }

@@ -127,6 +127,7 @@ public class SetupManager : NetworkBehaviour
         else
         {
             Debug.LogWarning("No config file found to import.");
+            SoundManager.Instance.PlaySound("Error");
         }
     }
 }
