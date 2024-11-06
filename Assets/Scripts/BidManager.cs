@@ -216,6 +216,8 @@ public class BidManager : NetworkBehaviour
         bidInputField.text = "";
     }
 
+    private Coroutine cooldownCoroutine;
+
     [Rpc(SendTo.Server)]
     private void MakeBidRpc(ulong bidderId, int bidAmount)
     {
@@ -235,7 +237,11 @@ public class BidManager : NetworkBehaviour
             return;
         }
 
-        StartCoroutine(ConfirmCooldownAfterNewBid());
+        if (cooldownCoroutine != null)
+        {
+            StopCoroutine(cooldownCoroutine);
+        }
+        cooldownCoroutine = StartCoroutine(ConfirmCooldownAfterNewBid());
 
         // WE GOOD, CONTINUE
         m_BidLeaderId.Value = bidderId;
