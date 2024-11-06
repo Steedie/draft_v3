@@ -4,6 +4,7 @@ using System.Globalization;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BidManager : NetworkBehaviour
 {
@@ -26,6 +27,8 @@ public class BidManager : NetworkBehaviour
 
     [SerializeField] private Color canBidColor = Color.green;
     [SerializeField] private Color cantBidColor = Color.red;
+
+    [SerializeField] private Button confirmWinnerButton;
 
     private bool isInitialized = false;
 
@@ -232,11 +235,20 @@ public class BidManager : NetworkBehaviour
             return;
         }
 
+        StartCoroutine(ConfirmCooldownAfterNewBid());
+
         // WE GOOD, CONTINUE
         m_BidLeaderId.Value = bidderId;
         m_CurrentBid.Value = bidAmount;
 
         UpdateHighestBidderUiRpc(bidderId, bidAmount);
+    }
+
+    IEnumerator ConfirmCooldownAfterNewBid()
+    {
+        confirmWinnerButton.interactable = false;
+        yield return new WaitForSeconds(.5f);
+        confirmWinnerButton.interactable = true;
     }
 
     [Rpc(SendTo.Everyone)]
