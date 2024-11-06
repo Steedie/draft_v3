@@ -265,6 +265,7 @@ public class BidManager : NetworkBehaviour
         string playerName = netPlayer.m_PlayerName.Value.ToString();
         string highestBid = bidAmount.ToString("C0", CultureInfo.CreateSpecificCulture("en-US"));
         highestBidderText.text = $"highest bidder: {playerName} {highestBid}";
+        SoundManager.Instance.PlaySound("MakeBid");
     }
 
     private void UpdateHighestBidderUi()
@@ -327,5 +328,17 @@ public class BidManager : NetworkBehaviour
         m_CurrentBid.Value = 0;
         m_BidLeaderId.Value = 0;
         m_BiddingActive.Value = false;
+
+        BidWinnerSoundRpc(netPlayer.NetworkObjectId);
+    }
+
+    [Rpc(SendTo.Everyone)]
+    private void BidWinnerSoundRpc(ulong winnerId)
+    {
+        SoundManager.Instance.PlaySound("ConfirmWinner");
+        if (winnerId == GameManager.NetPlayer.NetworkObjectId)
+        {
+            SoundManager.Instance.PlaySound("IsBidWinner");
+        }
     }
 }
