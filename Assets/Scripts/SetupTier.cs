@@ -73,4 +73,34 @@ public class SetupTier : MonoBehaviour
                 GameManager.SetupManager.CreateDraftPlayer(tierNetworkObjectId, playerName);
         }
     }
+
+    public string GetTierConfigAsJson()
+    {
+        TierData tierData = new TierData
+        {
+            tier = tierNameInputField.text,
+            color = tierColorInputField.text,
+            minimumBid = minimumBidInputField.text,
+            players = playersInputField.text.Split(',').Select(player => player.Trim()).ToArray()
+        };
+
+        return JsonUtility.ToJson(tierData, true);
+    }
+
+    public void SetTierConfig(TierData tierData)
+    {
+        tierNameInputField.text = tierData.tier;
+        tierColorInputField.text = tierData.color;
+        minimumBidInputField.text = tierData.minimumBid;
+        playersInputField.text = string.Join(", ", tierData.players);
+    }
+}
+
+[System.Serializable]
+public class TierData
+{
+    public string tier;
+    public string color;
+    public string minimumBid;
+    public string[] players;
 }
